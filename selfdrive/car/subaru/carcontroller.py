@@ -1,6 +1,6 @@
 from selfdrive.car import apply_std_steer_torque_limits
 from selfdrive.car.subaru import subarucan
-from selfdrive.car.subaru.values import DBC, PREGLOBAL_CARS, REDUCED_TORQUE_CARS, CarControllerParams
+from selfdrive.car.subaru.values import DBC, CAR, PREGLOBAL_CARS, REDUCED_TORQUE_CARS, CarControllerParams
 from opendbc.can.packer import CANPacker
 
 
