@@ -469,8 +469,11 @@ class Controls:
       CC.hudControl.leftLaneDepart = bool(l_lane_change_prob > LANE_DEPARTURE_THRESHOLD and l_lane_close)
       CC.hudControl.rightLaneDepart = bool(r_lane_change_prob > LANE_DEPARTURE_THRESHOLD and r_lane_close)
 
-    if CC.hudControl.rightLaneDepart or CC.hudControl.leftLaneDepart:
-      self.events.add(EventName.ldw)
+    if CC.hudControl.leftLaneDepart:
+      self.events.add(EventName.ldwLeft)
+
+    if CC.hudControl.rightLaneDepart:
+      self.events.add(EventName.ldwRight)
 
     clear_event = ET.WARNING if ET.WARNING not in self.current_alert_types else None
     alerts = self.events.create_alerts(self.current_alert_types, [self.CP, self.sm, self.is_metric])

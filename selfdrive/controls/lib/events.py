@@ -310,14 +310,22 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       Priority.HIGHEST, VisualAlert.fcw, AudibleAlert.chimeWarningRepeat, 1., 2., 2.),
   },
 
-  EventName.ldw: {
+  EventName.ldwLeft: {
     ET.PERMANENT: Alert(
       "TAKE CONTROL",
       "Lane Departure Detected",
       AlertStatus.userPrompt, AlertSize.mid,
-      Priority.LOW, VisualAlert.steerRequired, AudibleAlert.chimePrompt, 1., 2., 3.),
+      Priority.LOW, VisualAlert.ldwLeft, AudibleAlert.chimePrompt, 1., 2., 3.),
   },
 
+  EventName.ldwRight: {
+    ET.PERMANENT: Alert(
+      "TAKE CONTROL",
+      "Lane Departure Detected",
+      AlertStatus.userPrompt, AlertSize.mid,
+      Priority.LOW, VisualAlert.ldwRight, AudibleAlert.chimePrompt, 1., 2., 3.),
+  },
+  
   # ********** events only containing alerts that display while engaged **********
 
   EventName.gasPressed: {

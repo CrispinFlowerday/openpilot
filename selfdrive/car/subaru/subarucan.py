@@ -33,6 +33,13 @@ def create_es_lkas(packer, es_lkas_msg, visual_alert, left_line, right_line, ena
   if visual_alert == VisualAlert.steerRequired:
     values["Keep_Hands_On_Wheel"] = 1
 
+  if values["LKAS_Alert"] == 0:
+    if visual_alert == VisualAlert.ldwLeft:
+      values["LKAS_Alert"] = 12
+
+    if visual_alert == VisualAlert.ldwRight:
+      values["LKAS_Alert"] = 11
+
   # Try and enable LKAS icon if active
   values["LKAS_ACTIVE"] = int(enabled)
 
