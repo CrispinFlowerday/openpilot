@@ -41,7 +41,7 @@ def create_es_lkas(packer, es_lkas_msg, visual_alert, left_line, right_line, ena
       values["LKAS_Alert"] = 11
 
   # Try and enable LKAS icon if active
-  values["LKAS_ACTIVE"] = int(enabled)
+  #values["LKAS_ACTIVE"] = int(enabled)
 
   values["LKAS_Left_Line_Visible"] = int(left_line)
   values["LKAS_Right_Line_Visible"] = int(right_line)
