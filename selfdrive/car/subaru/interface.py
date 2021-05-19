@@ -52,7 +52,8 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0., 20.], [0., 20.]]
       ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.2, 0.3], [0.02, 0.03]]
 
-    if candidate == CAR.IMPREZA_2020: # Works great on freeway, not really tested  at low speed
+    if candidate == CAR.IMPREZA_2020: # Works great on freeway, ok at low speed
+      ret.safetyParam = 1 # lower max_steer for 2020
       ret.mass = 1480. + STD_CARGO_KG
       ret.wheelbase = 2.67
       ret.centerToFront = ret.wheelbase * 0.5
