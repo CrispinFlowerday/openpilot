@@ -1,4 +1,5 @@
 import copy
+import os
 from cereal import car
 
 VisualAlert = car.CarControl.HUDControl.VisualAlert
@@ -40,26 +41,35 @@ def create_es_lkas(packer, es_lkas_msg, visual_alert, left_line, right_line, ena
     if visual_alert == VisualAlert.ldwRight:
       values["LKAS_Alert"] = 11
 
-  # Test some values
-  values["LKAS_ACTIVE"] = 1 if os.path.exists("/tmp/lkas_active") else 0 # Hypothesis, disable stock
-  values["LKAS_ENABLE_3"] = 1 if os.path.exists("/tmp/lkas_enable_3") else 0  # Hypothesis, enable display of left line
-  values["LKAS_ENABLE_2"] = 1 if os.path.exists("/tmp/lkas_enable_2") else 0  # Hypothesis, enable display of right line
-  if os.path.exists("/tmp/lkas_signal2_1"): # 1 = white LKAS, 2 = green LKAS
-    values["Signal2"] = 1 
-  elif os.path.exists("/tmp/lkas_signal2_2"):
-    values["Signal2"] = 2 
-  else:
-    values["Signal2"] = 0
+  values["LKAS_Left_Line_Visible"] = int(left_line)
+  values["LKAS_Right_Line_Visible"] = int(right_line)
 
-  values["LKAS_Left_Line_Visible"] = int(os.path.exists("/tmp/lkas_left_visible"))
-  values["LKAS_Right_Line_Visible"] = int(os.path.exists("/tmp/lkas_right_visible"))
+  # Signal2=
+  # LKAS_ACTIVE=
+  # LKAS_Alert=
 
-  values["LKAS_Left_Line_Light_Blink"] = int(os.path.exists("/tmp/lkas_left_blink"))
-  values["LKAS_Right_Line_Light_Blink"] = int(os.path.exists("/tmp/lkas_right_blink"))
+  # LKAS_ENABLE_3=
+  # LKAS_Left_Line_Light_Blink=
+  # LKAS_Left_Line_Visible=
+  # LKAS_Left_Line_Green=
 
-  values["LKAS_Left_Line_Green"] = int(os.path.exists("/tmp/lkas_left_green"))
-  values["LKAS_Right_Line_Green"] = int(os.path.exists("/tmp/lkas_right_green"))
-  
+  # LKAS_ENABLE_2=
+  # LKAS_Right_Line_Light_Blink=
+  # LKAS_Right_Line_Visible=
+  # LKAS_Right_Line_Green=
+
+  # Backward_Speed_Limit_Menu
+  # Empty_Box
+
+  if os.path.exists("/tmp/lkas_values"):
+    with open("/tmp/lkas_values") as myfile:
+      for line in myfile:
+        name, var = line.partition("=")[::2]
+        name = name.strip()
+        var = var.strip()
+        if len(var) > 0 and var.isdigit():
+          values[name] = int(var)
+
   return packer.make_can_msg("ES_LKAS_State", 0, values)
 
 def create_throttle(packer, throttle_msg, throttle_cmd):
