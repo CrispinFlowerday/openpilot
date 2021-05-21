@@ -41,9 +41,9 @@ def create_es_lkas(packer, es_lkas_msg, visual_alert, left_line, right_line, ena
       values["LKAS_Alert"] = 11
 
   # Test some values
-  values["LKAS_ACTIVE"] = os.path.exists("/tmp/lkas_active") ? 1 : 0 # Hypothesis, disable stock
-  values["LKAS_ENABLE_3"] = os.path.exists("/tmp/lkas_enable_3") ? 1 : 0  # Hypothesis, enable display of left line
-  values["LKAS_ENABLE_2"] = os.path.exists("/tmp/lkas_enable_2") ? 1 : 0  # Hypothesis, enable display of right line
+  values["LKAS_ACTIVE"] = 1 if os.path.exists("/tmp/lkas_active") else 0 # Hypothesis, disable stock
+  values["LKAS_ENABLE_3"] = 1 if os.path.exists("/tmp/lkas_enable_3") else 0  # Hypothesis, enable display of left line
+  values["LKAS_ENABLE_2"] = 1 if os.path.exists("/tmp/lkas_enable_2") else 0  # Hypothesis, enable display of right line
   if os.path.exists("/tmp/lkas_signal2_1"): # 1 = white LKAS, 2 = green LKAS
     values["Signal2"] = 1 
   elif os.path.exists("/tmp/lkas_signal2_2"):
