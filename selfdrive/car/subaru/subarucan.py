@@ -17,9 +17,6 @@ def create_steering_control(packer, apply_steer, frame, steer_step):
 
   return packer.make_can_msg("ES_LKAS", 0, values)
 
-def create_steering_status(packer, apply_steer, frame, steer_step):
-  return packer.make_can_msg("ES_LKAS_State", 0, {})
-
 def create_es_distance(packer, es_distance_msg, pcm_cancel_cmd):
 
   values = copy.copy(es_distance_msg)
@@ -30,7 +27,30 @@ def create_es_distance(packer, es_distance_msg, pcm_cancel_cmd):
 
 def create_es_lkas(packer, es_lkas_msg, visual_alert, left_line, right_line, enabled):
 
+  if !enabled:
+    return es_lkas_msg
+
   values = copy.copy(es_lkas_msg)
+
+  # Clear out LKAS warnings (driver monitoring from stock)
+  if values["Keep_Hands_On_Wheel"] == 1:
+    values["Keep_Hands_On_Wheel"] = 0
+
+  # Clear LKAS disabled dash alert (from stock)
+  if values["LKAS_Alert"] in [ 27 ]:
+    values["LKAS_Alert"] = 0
+
+  # Setup dash display
+  values["LKAS_ACTIVE"] = 1 # Show correct display
+  values["LKAS_Dash_Icon"] = 2 # Green enabled icon
+  values["LKAS_Left_Line_Enable"] = 1 # Allow showing left line
+  values["LKAS_Right_Line_Enable"] = 1 # Allow showing right line
+
+  # Show correct Left/Right display
+  values["LKAS_Left_Line_Visible"] = int(left_line)
+  values["LKAS_Right_Line_Visible"] = int(right_line)
+
+  # Show warnings as appropriate
   if visual_alert == VisualAlert.steerRequired:
     values["Keep_Hands_On_Wheel"] = 1
 
@@ -41,8 +61,6 @@ def create_es_lkas(packer, es_lkas_msg, visual_alert, left_line, right_line, ena
     if visual_alert == VisualAlert.ldwRight:
       values["LKAS_Alert"] = 11
 
-  values["LKAS_Left_Line_Visible"] = int(left_line)
-  values["LKAS_Right_Line_Visible"] = int(right_line)
 
   # Signal2=
   # LKAS_ACTIVE=
