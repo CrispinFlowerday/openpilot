@@ -74,6 +74,25 @@ def create_es_lkas(packer, es_lkas_msg, enabled, visual_alert, left_line, right_
   # LKAS_Left_Line_Visible=
   # LKAS_Left_Line_Green=
 
+  # 1 Obstacle detechted - continuous tone
+  # 2 Obstacle detected - beeping
+  # 3 Throttle management activated
+  # 4 Throttle management activated - red warning
+  # 5 Pre collision braking system activated - orange - continuous tone
+  # 8 Traffic light ahead
+  # 9 Apply brake to hold position
+  # 11 Right lane depart
+  # 12 Left lane depart
+  # 13 Stay alert
+  # 14 Vehicle ahead has moved
+  # 18 red flash keey hands on steering wheel (with beep)
+  # 24 beep loud
+  # 25 beep medium (ACC car beep)
+  # 26 de-de (cruise disengaged)
+  # 27 de-de (LKAS disengaged)
+  # 28 ding ding
+  # 30 de-de de-de de-de de-de
+  
   # LKAS_ENABLE_2=
   # LKAS_Right_Line_Light_Blink=
   # LKAS_Right_Line_Visible=
