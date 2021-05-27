@@ -29,20 +29,19 @@ def create_es_lkas(packer, es_lkas_msg, enabled, visual_alert, left_line, right_
 
   values = copy.copy(es_lkas_msg)
 
-  # First, if we are enabled, clear out any existing warnings from Stock
+  # If OP is engaged, then ignore stock LKAS alerts
   if enabled:
     if values["Keep_Hands_On_Wheel"] == 1:
       values["Keep_Hands_On_Wheel"] = 0
 
-    # Clear LKAS disabled dash alert (from stock)
     if values["LKAS_Alert"] in [ 27 ]:
       values["LKAS_Alert"] = 0
 
-  # Clear out stock LDW warnings
+  # Always ignore stock LDW alerts
   if values["LKAS_Alert"] in [ 11, 12 ]:
     values["LKAS_Alert"] = 0
 
-  # Now show any OP required warnings
+  # Show OP alerts
   if visual_alert == VisualAlert.steerRequired:
     values["Keep_Hands_On_Wheel"] = 1
   
@@ -54,16 +53,18 @@ def create_es_lkas(packer, es_lkas_msg, enabled, visual_alert, left_line, right_
       values["LKAS_Alert"] = 11 # Right lane departure dash alert
 
 
-  # If we are enabled, then show out LKAS display
+  # If we are enabled, then display LKAS correctly
   if enabled:
     # Setup dash display
-    values["LKAS_ACTIVE"] = 1 # Show correct display
+    values["LKAS_ACTIVE"] = 1 # Show LKAS display
     values["LKAS_Dash_Icon"] = 2 # Green enabled icon
     values["LKAS_Left_Line_Enable"] = 1 # Allow showing left line
     values["LKAS_Right_Line_Enable"] = 1 # Allow showing right line
-    values["LKAS_Left_Line_Visible"] = int(left_line)
-    values["LKAS_Right_Line_Visible"] = int(right_line)
 
+  # Always use OP lane lines
+  values["LKAS_Left_Line_Visible"] = int(left_line)
+  values["LKAS_Right_Line_Visible"] = int(right_line)
+    
   # Signal2=
   # LKAS_ACTIVE=
   # LKAS_Alert=
