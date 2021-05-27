@@ -38,6 +38,9 @@ def create_es_lkas(packer, es_lkas_msg, enabled, visual_alert, left_line, right_
     if values["LKAS_Alert"] in [ 27 ]:
       values["LKAS_Alert"] = 0
 
+  # Clear out stock LDW warnings
+  if values["LKAS_Alert"] in [ 11, 12 ]:
+    values["LKAS_Alert"] = 0
 
   # Now show any OP required warnings
   if visual_alert == VisualAlert.steerRequired:
