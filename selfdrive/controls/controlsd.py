@@ -472,11 +472,8 @@ class Controls:
     if os.path.exists("/tmp/op_left_depart"):
       CC.hudControl.leftLaneDepart = True
 
-    if CC.hudControl.leftLaneDepart:
-      self.events.add(EventName.ldwLeft)
-
-    if CC.hudControl.rightLaneDepart:
-      self.events.add(EventName.ldwRight)
+    if CC.hudControl.leftLaneDepart or CC.hudControl.rightLaneDepart:
+      self.events.add(EventName.ldw)
 
     clear_event = ET.WARNING if ET.WARNING not in self.current_alert_types else None
     alerts = self.events.create_alerts(self.current_alert_types, [self.CP, self.sm, self.is_metric])
