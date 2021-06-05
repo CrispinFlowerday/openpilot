@@ -113,7 +113,7 @@ def create_es_lkas(packer, es_lkas_msg, enabled, visual_alert, left_line, right_
   return packer.make_can_msg("ES_LKAS_State", 0, values)
 
 def create_es_dashstatus(packer, dashstatus_msg):
-  values = copy.copy(throttle_msg)
+  values = copy.copy(dashstatus_msg)
 
   # Test Signal1 == 192
   # Test Signal2 == (3 bits)
