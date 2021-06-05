@@ -115,8 +115,34 @@ def create_es_lkas(packer, es_lkas_msg, enabled, visual_alert, left_line, right_
 def create_es_dashstatus(packer, dashstatus_msg):
   values = copy.copy(dashstatus_msg)
 
-  # Test Signal1 == 192
-  # Test Signal2 == (3 bits)
+  # Signal1 = 1/2/3 noop
+  #---
+  # Signal1 == 4 Cruise off steep slope
+  # Signal1 == 8 Cruise lvl1 eco
+  # Signal1 == 12 Cruise lvl2 comfort
+  # Signal1 == 16 Cruise off - empty text
+  # Signal1 == 20 Cruise off (centered)
+  # Signal1 == 24 Cruise "Unable to set"
+  # Signal1 == 28 Cruise Unable to set brakes applied
+  # Signal1 == 32 Eyesight not ready
+  # Signal1 == 36 Cruise lvl3 standard
+  # Signal1 == 40 Cruise lvl4 dynamic
+  # Signal1 == 44 Cruise "Unable to set Steep Slope"
+  # Signal1 == 48-60 / noop
+  #----
+  # Signal1 == 64 LKAS off (Sharp Curve)
+  # Signal1 == 128 Keep hands on steering wheel LKAS
+  # Signal1 == 192 LKAS off
+  # Signal1 == 256 LKAS off speed too slow
+  # Signal1 == 320 LKAS off speed too fast
+  # Signal1 == 284 Noop
+  #---
+  
+  # Test Signal2 == (2 bits)
+  # Signal2 == 1 Eyesight disabled, bad visibility
+  # Signal2 == 2 Eyesight disabled, check manual
+
+  # Signal6 Show Car (0/1)
   
   if os.path.exists("/tmp/es_dashstatus"):
     with open("/tmp/es_dashstatus") as myfile:
