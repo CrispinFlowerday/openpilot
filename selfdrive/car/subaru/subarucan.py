@@ -112,7 +112,7 @@ def create_es_lkas(packer, es_lkas_msg, enabled, visual_alert, left_line, right_
 
   return packer.make_can_msg("ES_LKAS_State", 0, values)
 
-def create_es_dashstatus(packer, dashstatus_msg):
+def create_es_dashstatus(packer, dashstatus_msg, enabled):
   values = copy.copy(dashstatus_msg)
 
   # Signal1 = 1/2/3 noop
@@ -143,7 +143,12 @@ def create_es_dashstatus(packer, dashstatus_msg):
   # Signal2 == 2 Eyesight disabled, check manual
 
   # Signal6 Show Car (0/1)
+  #---
   
+  # Remove the LKAS off alert if we are enabled
+  if enabled and values["Signal1"] == 192:
+    values["Signal1"] = 0
+
   if os.path.exists("/tmp/es_dashstatus"):
     with open("/tmp/es_dashstatus") as myfile:
       for line in myfile:
