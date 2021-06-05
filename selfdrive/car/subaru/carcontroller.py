@@ -11,6 +11,7 @@ class CarController():
     self.es_distance_cnt = -1
     self.es_accel_cnt = -1
     self.es_lkas_cnt = -1
+    self.es_dashstatus_cnt = -1
     self.throttle_cnt = -1
     self.brake_pedal_cnt = -1
     self.fake_button_prev = 0
@@ -144,4 +145,8 @@ class CarController():
          can_sends.append(subarucan.create_brake_pedal(self.packer, CS.brake_pedal_msg, speed_cmd))
          self.brake_pedal_cnt = CS.brake_pedal_msg["Counter"]
 
+      if self.es_dashstatus_cnt != CS.es_dashstatus_msg["Counter"]:
+         can_sends.append(subarucan.create_es_dashstatus(self.packer, CS.es_dashstatus_msg))
+         self.es_dashstatus_cnt = CS.es_dashstatus_msg["Counter"]
+         
     return can_sends

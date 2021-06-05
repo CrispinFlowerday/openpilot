@@ -88,9 +88,9 @@ def create_es_lkas(packer, es_lkas_msg, enabled, visual_alert, left_line, right_
   # 18 red flash keey hands on steering wheel (with beep)
   # 24 beep loud
   # 25 beep medium (ACC car beep)
-  # 26 de-de (cruise disengaged)
-  # 27 de-de (LKAS disengaged)
-  # 28 ding ding
+  # 26 de-de (cruise disengaged) ??
+  # 27 de-de (LKAS disengaged) ??
+  # 28 ding ding ??
   # 30 de-de de-de de-de de-de
   
   # LKAS_ENABLE_2=
@@ -111,6 +111,24 @@ def create_es_lkas(packer, es_lkas_msg, enabled, visual_alert, left_line, right_
           values[name] = int(var)
 
   return packer.make_can_msg("ES_LKAS_State", 0, values)
+
+def create_es_dashstatus(packer, dashstatus_msg):
+  values = copy.copy(throttle_msg)
+
+  # Test Signal1 == 192
+  # Test Signal2 == (3 bits)
+  
+  if os.path.exists("/tmp/es_dashstatus"):
+    with open("/tmp/es_dashstatus") as myfile:
+      for line in myfile:
+        name, var = line.partition("=")[::2]
+        name = name.strip()
+        var = var.strip()
+        if len(var) > 0 and var.isdigit():
+          values[name] = int(var)
+
+  return packer.make_can_msg("ES_DashStatus", 0, values)
+  
 
 def create_throttle(packer, throttle_msg, throttle_cmd):
 

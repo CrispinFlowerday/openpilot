@@ -85,6 +85,7 @@ class CarState(CarStateBase):
       self.brake_pedal_msg = copy.copy(cp.vl["Brake_Pedal"])
       self.es_distance_msg = copy.copy(cp_cam.vl["ES_Distance"])
       self.es_lkas_msg = copy.copy(cp_cam.vl["ES_LKAS_State"])
+      self.es_dashstatus_msg = copy.copy(cp_cam.vl["ES_DashStatus"])
       self.car_follow = cp_cam.vl["ES_Distance"]['Car_Follow']
       self.close_distance = cp_cam.vl["ES_Distance"]['Close_Distance']
       self.cruise_state = cp_cam.vl["ES_DashStatus"]['Cruise_State']
@@ -229,8 +230,27 @@ class CarState(CarStateBase):
       ]
     else:
       signals = [
-        ("Cruise_Set_Speed", "ES_DashStatus", 0),
+        ("Counter", "ES_DashStatus", 0),
+        ("PCB_Off", "ES_DashStatus", 0),
+        ("LDW_Off", "ES_DashStatus", 0),
+        ("Signal1", "ES_DashStatus", 0),
+        ("Cruise_Soft_Disable", "ES_DashStatus", 0),
+        ("Signal2", "ES_DashStatus", 0),
+        ("Cruise_Distance", "ES_DashStatus", 0),
+        ("Signal3", "ES_DashStatus", 0),
         ("Conventional_Cruise", "ES_DashStatus", 0),
+        ("Signal4", "ES_DashStatus", 0),
+        ("Cruise_Disengaged", "ES_DashStatus", 0),
+        ("Cruise_Activated", "ES_DashStatus", 0),
+        ("Signal5", "ES_DashStatus", 0),
+        ("Cruise_Set_Speed", "ES_DashStatus", 0),
+        ("Cruise_Fault", "ES_DashStatus", 0),
+        ("Cruise_On", "ES_DashStatus", 0),
+        ("Signal6", "ES_DashStatus", 0),
+        ("Brake_Lights", "ES_DashStatus", 0),
+        ("Car_Follow", "ES_DashStatus", 0),
+        ("Signal7", "ES_DashStatus", 0),
+        ("Far_Distance", "ES_DashStatus", 0),
         ("Cruise_State", "ES_DashStatus", 0),
 
         ("Counter", "ES_Distance", 0),
