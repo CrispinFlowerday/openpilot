@@ -146,7 +146,7 @@ class CarController():
          self.brake_pedal_cnt = CS.brake_pedal_msg["Counter"]
 
       if self.es_dashstatus_cnt != CS.es_dashstatus_msg["Counter"]:
-         can_sends.append(subarucan.create_es_dashstatus(self.packer, CS.es_dashstatus_msg, enabled))
+         can_sends.append(subarucan.create_es_dashstatus(self.packer, CS.es_dashstatus_msg))
          self.es_dashstatus_cnt = CS.es_dashstatus_msg["Counter"]
          
     return can_sends
