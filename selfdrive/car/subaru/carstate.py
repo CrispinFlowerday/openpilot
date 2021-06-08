@@ -74,6 +74,7 @@ class CarState(CarStateBase):
       ret.cruiseState.nonAdaptive = cp_cam.vl["ES_DashStatus"]["Conventional_Cruise"] == 1
       self.es_distance_msg = copy.copy(cp_cam.vl["ES_Distance"])
       self.es_lkas_msg = copy.copy(cp_cam.vl["ES_LKAS_State"])
+      self.es_dashstatus_msg = copy.copy(cp_cam.vl["ES_DashStatus"])
 
     return ret
 
@@ -185,8 +186,32 @@ class CarState(CarStateBase):
       ]
     else:
       signals = [
-        ("Cruise_Set_Speed", "ES_DashStatus", 0),
+        ("Counter", "ES_DashStatus", 0),
+        ("PCB_Off", "ES_DashStatus", 0),
+        ("LDW_Off", "ES_DashStatus", 0),
+        ("Signal1", "ES_DashStatus", 0),
+        ("Cruise_State_Msg", "ES_DashStatus", 0),
+        ("LKAS_State_Msg", "ES_DashStatus", 0),
+        ("Signal2", "ES_DashStatus", 0),
+        ("Cruise_Soft_Disable", "ES_DashStatus", 0),
+        ("EyeSight_Status_Msg", "ES_DashStatus", 0),
+        ("Signal3", "ES_DashStatus", 0),
+        ("Cruise_Distance", "ES_DashStatus", 0),
+        ("Signal4", "ES_DashStatus", 0),
         ("Conventional_Cruise", "ES_DashStatus", 0),
+        ("Signal5", "ES_DashStatus", 0),
+        ("Cruise_Disengaged", "ES_DashStatus", 0),
+        ("Cruise_Activated", "ES_DashStatus", 0),
+        ("Signal6", "ES_DashStatus", 0),
+        ("Cruise_Set_Speed", "ES_DashStatus", 0),
+        ("Cruise_Fault", "ES_DashStatus", 0),
+        ("Cruise_On", "ES_DashStatus", 0),
+        ("Display_Own_Car", "ES_DashStatus", 0),
+        ("Brake_Lights", "ES_DashStatus", 0),
+        ("Car_Follow", "ES_DashStatus", 0),
+        ("Signal7", "ES_DashStatus", 0),
+        ("Far_Distance", "ES_DashStatus", 0),
+        ("Cruise_State", "ES_DashStatus", 0),
 
         ("Counter", "ES_Distance", 0),
         ("Signal1", "ES_Distance", 0),
@@ -212,15 +237,14 @@ class CarState(CarStateBase):
         ("Signal1", "ES_LKAS_State", 0),
         ("LKAS_ACTIVE", "ES_LKAS_State", 0),
         ("Signal2", "ES_LKAS_State", 0),
+        ("LKAS_Dash_Icon", "ES_LKAS_State", 0),
         ("Backward_Speed_Limit_Menu", "ES_LKAS_State", 0),
-        ("LKAS_ENABLE_3", "ES_LKAS_State", 0),
+        ("LKAS_Left_Line_Enable", "ES_LKAS_State", 0),
         ("LKAS_Left_Line_Light_Blink", "ES_LKAS_State", 0),
-        ("LKAS_ENABLE_2", "ES_LKAS_State", 0),
+        ("LKAS_Right_Line_Enable", "ES_LKAS_State", 0),
         ("LKAS_Right_Line_Light_Blink", "ES_LKAS_State", 0),
         ("LKAS_Left_Line_Visible", "ES_LKAS_State", 0),
-        ("LKAS_Left_Line_Green", "ES_LKAS_State", 0),
         ("LKAS_Right_Line_Visible", "ES_LKAS_State", 0),
-        ("LKAS_Right_Line_Green", "ES_LKAS_State", 0),
         ("LKAS_Alert", "ES_LKAS_State", 0),
         ("Signal3", "ES_LKAS_State", 0),
       ]

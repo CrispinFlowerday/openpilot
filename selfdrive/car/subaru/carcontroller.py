@@ -9,6 +9,7 @@ class CarController():
     self.apply_steer_last = 0
     self.es_distance_cnt = -1
     self.es_accel_cnt = -1
+    self.es_dashstatus_cnt = -1
     self.es_lkas_cnt = -1
     self.cruise_button_prev = 0
     self.steer_rate_limited = False
@@ -69,7 +70,11 @@ class CarController():
         self.es_distance_cnt = CS.es_distance_msg["Counter"]
 
       if self.es_lkas_cnt != CS.es_lkas_msg["Counter"]:
-        can_sends.append(subarucan.create_es_lkas(self.packer, CS.es_lkas_msg, visual_alert, left_line, right_line, left_lane_depart, right_lane_depart))
+        can_sends.append(subarucan.create_es_lkas(self.packer, CS.es_lkas_msg, enabled, visual_alert, left_line, right_line, left_lane_depart, right_lane_depart))
         self.es_lkas_cnt = CS.es_lkas_msg["Counter"]
+
+      if self.es_dashstatus_cnt != CS.es_dashstatus_msg["Counter"]:
+         can_sends.append(subarucan.create_es_dashstatus(self.packer, CS.es_dashstatus_msg))
+         self.es_dashstatus_cnt = CS.es_dashstatus_msg["Counter"]
 
     return can_sends

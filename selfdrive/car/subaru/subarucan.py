@@ -16,9 +16,6 @@ def create_steering_control(packer, apply_steer, frame, steer_step):
 
   return packer.make_can_msg("ES_LKAS", 0, values)
 
-def create_steering_status(packer, apply_steer, frame, steer_step):
-  return packer.make_can_msg("ES_LKAS_State", 0, {})
-
 def create_es_distance(packer, es_distance_msg, pcm_cancel_cmd):
 
   values = copy.copy(es_distance_msg)
@@ -27,9 +24,39 @@ def create_es_distance(packer, es_distance_msg, pcm_cancel_cmd):
 
   return packer.make_can_msg("ES_Distance", 0, values)
 
-def create_es_lkas(packer, es_lkas_msg, visual_alert, left_line, right_line, left_lane_depart, right_lane_depart):
+def filter_stock_ldw_alerts(values):
+  # Filter out stock lane departure alerts
+  if values["LKAS_Alert"] in [ 11, 12 ]:
+    values["LKAS_Alert"] = 0
 
+  return values
+
+def filter_stock_lkas_alerts(values):
+  # Remove the Stock "Keep hands on wheel" alert
+  if values["Keep_Hands_On_Wheel"] == 1:
+    values["Keep_Hands_On_Wheel"] = 0
+
+  # Prevent Stock sending an audible tone if it turns off LKAS
+  if values["LKAS_Alert"] == 27:
+    values["LKAS_Alert"] = 0
+
+  return values
+
+def filter_stock_lkas_dashstatus(values):
+  # Prevent stock showing an LKAS disabled message
+  if values["LKAS_State_Msg"] == 3:
+    values["LKAS_State_Msg"] = 0
+
+  return values
+
+def create_es_lkas(packer, es_lkas_msg, enabled, visual_alert, left_line, right_line, left_lane_depart, right_lane_depart):
   values = copy.copy(es_lkas_msg)
+
+  # Prevent stock showing confusing messages
+  values = filter_stock_ldw_alerts(values)
+  values = filter_stock_lkas_alerts(values)
+
+  # Show OP alerts
   if visual_alert == VisualAlert.steerRequired:
     values["Keep_Hands_On_Wheel"] = 1
 
@@ -41,10 +68,32 @@ def create_es_lkas(packer, es_lkas_msg, visual_alert, left_line, right_line, lef
     elif right_lane_depart:
       values["LKAS_Alert"] = 11 # Right lane departure dash alert
 
+
+  # Setup the LKAS dash display
+  if enabled:
+    values["LKAS_ACTIVE"] = 1 # Show LKAS display
+    values["LKAS_Dash_Icon"] = 2 # Green enabled icon
+  else:
+    # By leaving LKAS_ACTIVE to the stock, it makes the button on the steering wheel toggle
+    # the display, but by setting LKAS_Dash_Icon to 0 means the dash doesn't show
+    # that LKAS is active (which it isn't because OP controls it)
+    # values["LKAS_ACTIVE"] = 0
+    values["LKAS_Dash_Icon"] = 0
+
+  # Setup it up so the lane lines show from OP
+  values["LKAS_Left_Line_Enable"] = 1
+  values["LKAS_Right_Line_Enable"] = 1
   values["LKAS_Left_Line_Visible"] = int(left_line)
   values["LKAS_Right_Line_Visible"] = int(right_line)
 
   return packer.make_can_msg("ES_LKAS_State", 0, values)
+
+def create_es_dashstatus(packer, dashstatus_msg):
+  values = copy.copy(dashstatus_msg)
+
+  values = filter_stock_lkas_dashstatus(values)
+
+  return packer.make_can_msg("ES_DashStatus", 0, values)
 
 # *** Subaru Pre-global ***
 
