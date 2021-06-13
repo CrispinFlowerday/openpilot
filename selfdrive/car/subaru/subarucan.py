@@ -74,14 +74,16 @@ def create_es_lkas(packer, es_lkas_msg, enabled, visual_alert, left_line, right_
   if enabled:
     values["LKAS_ACTIVE"] = 1 # Show LKAS display
     values["LKAS_Dash_Icon"] = 2 # Green enabled icon
-    values["LKAS_Left_Line_Enable"] = 1 # Allow showing left line
-    values["LKAS_Right_Line_Enable"] = 1 # Allow showing right line
   else:
-    values["LKAS_ACTIVE"] = 0
+    # By leaving LKAS_ACTIVE to the stock, it makes the button on the steering wheel toggle
+    # the display, but by setting LKAS_Dash_Icon to 0 means the dash doesn't show
+    # that LKAS is active (which it isn't because OP controls it)
+    # values["LKAS_ACTIVE"] = 0
     values["LKAS_Dash_Icon"] = 0
-    values["LKAS_Left_Line_Enable"] = 0
-    values["LKAS_Right_Line_Enable"] = 0
 
+  # Setup it up so the lane lines show from OP
+  values["LKAS_Left_Line_Enable"] = 1
+  values["LKAS_Right_Line_Enable"] = 1
   values["LKAS_Left_Line_Visible"] = int(left_line)
   values["LKAS_Right_Line_Visible"] = int(right_line)
     
