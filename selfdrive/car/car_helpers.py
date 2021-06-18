@@ -20,6 +20,7 @@ def get_startup_event(car_recognized, controller_available):
     event = EventName.startup
   else:
     event = EventName.startupMaster
+  event = EventName.startup
 
   if not car_recognized:
     event = EventName.startupNoCar
