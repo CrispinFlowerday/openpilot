@@ -1,3 +1,23 @@
+2021-08-04
+==========
+* Merge upstream (0.8.7) / @martinl
+* FPv2 updates
+  * 2018 Forester - UDM / @sarvcomp
+
+2021-08-03
+==========
+* FPv2 updates
+  * 2021 Crosstrek Limited - UDM / @AdamSLevy
+
+2021-08-02
+==========
+* Removed last remaining Subaru FPv1 fingerprints / @martinl
+* Minor carstate signal fixes / @martinl
+
+2021-08-01
+==========
+* Add Legacy 2018+ as separate model, has flipped triver torque signal / @martinl
+
 2021-07-31
 ==========
 * Update LKAS alert filtering for Outback 2020+ and Forester 2021+ / @martinl

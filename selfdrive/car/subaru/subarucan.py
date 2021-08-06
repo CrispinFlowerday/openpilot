@@ -27,41 +27,40 @@ def create_es_distance(packer, es_distance_msg, pcm_cancel_cmd):
 
   return packer.make_can_msg("ES_Distance", 0, values)
 
-def create_es_lkas(packer, es_lkas_msg, enabled, visual_alert, left_line, right_line, left_lane_depart, right_lane_depart, filter_alerts):
+def create_es_lkas(packer, es_lkas_msg, enabled, visual_alert, left_line, right_line, left_lane_depart, right_lane_depart):
 
   values = copy.copy(es_lkas_msg)
 
-  if filter_alerts:
-    # Filter the stock LKAS "Keep hands on wheel" alert
-    if values["LKAS_Alert_Msg"] == 1:
-      values["LKAS_Alert_Msg"] = 0
+  # Filter the stock LKAS "Keep hands on wheel" alert
+  if values["LKAS_Alert_Msg"] == 1:
+    values["LKAS_Alert_Msg"] = 0
 
-    # Filter the stock LKAS sending an audible alert when it turns off LKAS
-    if values["LKAS_Alert"] == 27:
-      values["LKAS_Alert"] = 0
+  # Filter the stock LKAS sending an audible alert when it turns off LKAS
+  if values["LKAS_Alert"] == 27:
+    values["LKAS_Alert"] = 0
 
-    # Filter the stock LKAS sending an audible alert when "Keep hands on wheel" alert is active (2020+ models)
-    if values["LKAS_Alert"] == 28 and values["LKAS_Alert_Msg"] == 7:
-      values["LKAS_Alert"] = 0
+  # Filter the stock LKAS sending an audible alert when "Keep hands on wheel" alert is active (2020+ models)
+  if values["LKAS_Alert"] == 28 and values["LKAS_Alert_Msg"] == 7:
+    values["LKAS_Alert"] = 0
 
-    # Filter the stock LKAS sending an audible alert when "Keep hands on wheel OFF" alert is active (2020+ models)
-    if values["LKAS_Alert"] == 30:
-      values["LKAS_Alert"] = 0
+  # Filter the stock LKAS sending an audible alert when "Keep hands on wheel OFF" alert is active (2020+ models)
+  if values["LKAS_Alert"] == 30:
+    values["LKAS_Alert"] = 0
 
-    # Filter the stock LKAS sending "Keep hands on wheel now" alert (2020+ models)
-    if values["LKAS_Alert_Msg"] == 7:
-      values["LKAS_Alert_Msg"] = 0
+  # Filter the stock LKAS sending "Keep hands on wheel OFF" alert (2020+ models)
+  if values["LKAS_Alert_Msg"] == 7:
+    values["LKAS_Alert_Msg"] = 0
 
+  # Show Keep hands on wheel alert for openpilot steerRequired alert
   if visual_alert == VisualAlert.steerRequired:
     values["LKAS_Alert_Msg"] = 1
 
-  if filter_alerts:
-    # Ensure we don't overwrite potentially more important alerts from stock (e.g. FCW)
-    if visual_alert == VisualAlert.ldw and values["LKAS_Alert"] == 0:
-      if left_lane_depart:
-        values["LKAS_Alert"] = 12 # Left lane departure dash alert
-      elif right_lane_depart:
-        values["LKAS_Alert"] = 11 # Right lane departure dash alert
+  # Ensure we don't overwrite potentially more important alerts from stock (e.g. FCW)
+  if visual_alert == VisualAlert.ldw and values["LKAS_Alert"] == 0:
+    if left_lane_depart:
+      values["LKAS_Alert"] = 12 # Left lane departure dash alert
+    elif right_lane_depart:
+      values["LKAS_Alert"] = 11 # Right lane departure dash alert
 
   if enabled:
     values["LKAS_ACTIVE"] = 1 # Show LKAS lane lines
@@ -76,13 +75,12 @@ def create_es_lkas(packer, es_lkas_msg, enabled, visual_alert, left_line, right_
 
   return packer.make_can_msg("ES_LKAS_State", 0, values)
 
-def create_es_dashstatus(packer, dashstatus_msg, filter_alerts):
+def create_es_dashstatus(packer, dashstatus_msg):
   values = copy.copy(dashstatus_msg)
 
-  if filter_alerts:
-    # Filter stock LKAS disabled and Keep hands on steering wheel OFF alerts
-    if values["LKAS_State_Msg"] in [2, 3]:
-      values["LKAS_State_Msg"] = 0
+  # Filter stock LKAS disabled and Keep hands on steering wheel OFF alerts
+  if values["LKAS_State_Msg"] in [2, 3]:
+    values["LKAS_State_Msg"] = 0
 
   return packer.make_can_msg("ES_DashStatus", 0, values)
 
@@ -138,7 +136,5 @@ def create_preglobal_throttle(packer, throttle_msg, throttle_cmd):
   values = copy.copy(throttle_msg)
   if throttle_cmd:
     values["Throttle_Pedal"] = 5
-
-  values["Checksum"] = subaru_preglobal_checksum(packer, values, "Throttle")
 
   return packer.make_can_msg("Throttle", 2, values)

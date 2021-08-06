@@ -146,7 +146,7 @@ private:
 };
 
 std::unordered_map<std::string, uint32_t> keys = {
-    {"AccessToken", CLEAR_ON_MANAGER_START},
+    {"AccessToken", CLEAR_ON_MANAGER_START | DONT_LOG},
     {"ApiCache_DriveStats", PERSISTENT},
     {"ApiCache_Device", PERSISTENT},
     {"ApiCache_Owner", PERSISTENT},
@@ -187,13 +187,13 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"IsTakingSnapshot", CLEAR_ON_MANAGER_START},
     {"IsUpdateAvailable", CLEAR_ON_MANAGER_START},
     {"UploadRaw", PERSISTENT},
-    {"LastAthenaPingTime", PERSISTENT},
+    {"LastAthenaPingTime", CLEAR_ON_MANAGER_START},
     {"LastGPSPosition", PERSISTENT},
     {"LastUpdateException", PERSISTENT},
     {"LastUpdateTime", PERSISTENT},
     {"LiveParameters", PERSISTENT},
     {"ManualParkingBrakeSNGToggle", PERSISTENT},
-    {"MapboxToken", PERSISTENT},
+    {"MapboxToken", PERSISTENT | DONT_LOG},
     {"NavDestination", CLEAR_ON_MANAGER_START | CLEAR_ON_IGNITION_OFF},
     {"NavSettingTime24h", PERSISTENT},
     {"OpenpilotEnabledToggle", PERSISTENT},
@@ -201,6 +201,7 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"PandaFirmwareHex", CLEAR_ON_MANAGER_START | CLEAR_ON_PANDA_DISCONNECT},
     {"PandaDongleId", CLEAR_ON_MANAGER_START | CLEAR_ON_PANDA_DISCONNECT},
     {"Passive", PERSISTENT},
+    {"PrimeRedirected", PERSISTENT},
     {"RecordFront", PERSISTENT},
     {"RecordFrontLock", PERSISTENT},  // for the internal fleet
     {"ReleaseNotes", PERSISTENT},
@@ -245,6 +246,10 @@ Params::Params(const std::string &path) : params_path(path) {
 
 bool Params::checkKey(const std::string &key) {
   return keys.find(key) != keys.end();
+}
+
+ParamKeyType Params::getKeyType(const std::string &key) {
+  return static_cast<ParamKeyType>(keys[key]);
 }
 
 int Params::put(const char* key, const char* value, size_t value_size) {
@@ -328,12 +333,12 @@ std::string Params::get(const char *key, bool block) {
   }
 }
 
-int Params::readAll(std::map<std::string, std::string> *params) {
+std::map<std::string, std::string> Params::readAll() {
   FileLock file_lock(params_path + "/.lock", LOCK_SH);
   std::lock_guard<FileLock> lk(file_lock);
 
   std::string key_path = params_path + "/d";
-  return util::read_files_in_dir(key_path, params);
+  return util::read_files_in_dir(key_path);
 }
 
 void Params::clearAll(ParamKeyType key_type) {
