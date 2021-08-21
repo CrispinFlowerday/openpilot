@@ -1,3 +1,28 @@
+2021-08-21
+==========
+* Merge upstream (0.8.8) / @martinl
+  * New driving model with improved laneless performance
+    * Trained on 5000+ hours of diverse driving data from 3000+ users in 40+ countries
+    * Better anti-cheating methods during simulator training ensure the model hugs less when in laneless mode
+    * All new desire ground-truthing stack makes the model better at lane changes
+  * New driving monitoring model: improved performance on comma three
+  * NEOS 18 for comma two: update packages
+  * AGNOS 1.3 for comma three: fix display init at high temperatures
+  * Improved auto-exposure on comma three
+  * Hyundai Kona Hybrid 2020 support thanks to haram-KONA!
+  * Hyundai Sonata Hybrid 2021 support thanks to Matt-Wash-Burn!
+  * Kia Niro Hybrid 2021 support thanks to tetious!
+
+2021-08-15
+==========
+* FPv2 updates
+  * 2018 Impreza Limited - UDM / @isaacdchan
+
+2021-08-14
+==========
+* FPv2 updates
+  * 2020 Ascent - UDM / @ndtran
+
 2021-08-04
 ==========
 * Merge upstream (0.8.7) / @martinl
