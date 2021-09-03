@@ -1,3 +1,8 @@
+2021-08-29
+==========
+* FPv2 updates
+  * 2018 Forester 2.5i Premium - UDM / @Diesel Monkey
+
 2021-08-26
 ==========
 * Merge upstream (0.8.8) / @martinl

@@ -232,9 +232,11 @@ FW_VERSIONS = {
     # 2018 Forester 2.5 Limited - Canada / @litobro
     # 2017 Forester - UDM / @hitoryu2001
     # 2018 Forester - UDM / @sarvcomp
+    # 2018 Forester 2.5i Premium - UDM / @Diesel Monkey
     # Ecu, addr, subaddr: ROM ID
     (Ecu.esp, 0x7b0, None): [
       b'\x7d\x97\x14\x40',
+      b'\xf1\x00\xbb\x0c\x04',
     ],
     (Ecu.eps, 0x746, None): [
       b'}\xc0\x10\x00',
@@ -243,6 +245,7 @@ FW_VERSIONS = {
     (Ecu.fwdCamera, 0x787, None): [
       b'\x00\x00\x64\x35\x1f\x40\x20\x09',
       b'\x00\x00c\xe9\x1f@ \x03',
+      b'\x00\x00d\xd3\x1f@ \t'
     ],
     (Ecu.engine, 0x7e0, None): [
       b'\xba"@p\a',
@@ -253,6 +256,7 @@ FW_VERSIONS = {
       b'\xdc\xf2\x60\x60\x00',
       b'\xdc\xf2@`\x00',
       b'\xda\xfd\xe0\x80\x00',
+      b'\xdc\xf2`\x81\000',
     ],
   },
   CAR.LEGACY_PREGLOBAL: {
